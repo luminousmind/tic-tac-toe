@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 var gameboard [3][3]rune = [3][3]rune{
@@ -71,21 +72,32 @@ func getMove() [2]int {
 		coords[1] = getCord('Y')
 
 		if coords[0] == -1 || coords[1] == -1 {
-			fmt.Println("\n\nError reading input, please repeat typing the coordinates.")
+			fmt.Println("\n\n🚫 Error reading input, please repeat typing the coordinates.")
+		} else if gameboard[coords[0]][coords[1]] != ' ' {
+			fmt.Println("\n\n🚫 That tile is already taken, please try again.")
 		} else {
-			break
+			return coords
 		}
 	}
-
-	return coords
 }
 
 func main() {
 	gameStart()
 
-	move := getMove()
+	for {
+		move := getMove()
 
-	fmt.Println(move)
+		gameboard[move[0]][move[1]] = playerTurn
 
-	printBoard()
+		if playerTurn == 'X' {
+			playerTurn = 'O'
+		} else {
+			playerTurn = 'X'
+		}
+
+		printBoard()
+
+		time.Sleep(time.Second)
+	}
+
 }
