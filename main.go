@@ -66,8 +66,16 @@ func getMove() [2]int {
 
 	var coords [2]int
 
-	coords[0] = getCord('X')
-	coords[1] = getCord('Y')
+	for {
+		coords[0] = getCord('X')
+		coords[1] = getCord('Y')
+
+		if coords[0] == -1 || coords[1] == -1 {
+			fmt.Println("\n\nError reading input, please repeat typing the coordinates.")
+		} else {
+			break
+		}
+	}
 
 	return coords
 }
