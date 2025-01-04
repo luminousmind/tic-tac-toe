@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var winner string
+
 var gameboard [3][3]rune = [3][3]rune{
 	{' ', ' ', ' '},
 	{' ', ' ', ' '},
@@ -25,6 +27,8 @@ func printBoard() {
 }
 
 func gameStart() {
+	winner = ""
+
 	fmt.Println("Tic-tac-toe is a simple boardgame in which two players alternate marking the spaces in three-by-three grid with X and O.")
 	fmt.Println("In a brief explanation of the rules of Tic-tac-toe:")
 	fmt.Println()
@@ -81,6 +85,31 @@ func getMove() [2]int {
 	}
 }
 
+func win(player rune) {
+	if player == 'X' {
+		winner = "Player 1"
+	} else if player == 'O' {
+		winner = "Player 2"
+	}
+}
+
+func test(x1, y1, x2, y2, x3, y3 int) {
+	if gameboard[x1][y1] == gameboard[x2][y2] && gameboard[x1][y1] == gameboard[x3][y3] {
+		win(gameboard[x1][y1])
+	}
+}
+
+func testWin() {
+	for i := 0; i < 3; i++ {
+		test(i, 0, i, 1, i, 2)
+		test(0, i, 1, i, 2, i)
+	}
+
+	// diagonals
+	test(0, 0, 1, 1, 2, 2)
+	test(2, 0, 1, 1, 0, 2)
+}
+
 func main() {
 	gameStart()
 
@@ -97,7 +126,14 @@ func main() {
 
 		printBoard()
 
+		testWin()
+
 		time.Sleep(time.Second)
+
+		if winner != "" {
+			fmt.Println("The winner is:", winner)
+			break
+		}
 	}
 
 }
